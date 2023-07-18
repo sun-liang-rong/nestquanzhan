@@ -1,17 +1,19 @@
 import { HttpException, Injectable } from '@nestjs/common';
-import { RegisterCatDto, GetCatDto } from './dto/create-cat.dto';
+import { RegisterCatDto, GetCatDto, PermissionDto } from './dto/create-cat.dto';
 import { UpdateCatDto } from './dto/update-cat.dto';
 import { Cat } from './entities/cat.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CatInfo } from 'src/entities/info.entity';
+import { Permission } from 'src/entities/permission.entity';
 @Injectable()
 export class CatsService {
   constructor(
     @InjectRepository(Cat) private readonly catRepository: Repository<Cat>,
     @InjectRepository(CatInfo)
     private readonly catInfoRepository: Repository<CatInfo>,
-  ) {}
+    @InjectRepository(Permission) private readonly permissionRepository: Repository<Permission>,
+    ) {}
   async create(registerCatDto: RegisterCatDto) {
     const existUser = await this.catRepository.findOne({
       where: {
@@ -30,7 +32,20 @@ export class CatsService {
       });
     }
   }
-
+  async createPermission(permissionDto: PermissionDto){
+    const name = await this.permissionRepository.findOne({
+      where: {
+        name: permissionDto.name
+      }
+    })
+    console.log(name)
+    if(name){
+      throw new HttpException('权限字段已存在', 400);
+    }
+    const permission = await this.permissionRepository.create(permissionDto)
+    const newPermission = await this.permissionRepository.save(permission)
+    return newPermission
+  }
   findAll(getCatDto: GetCatDto) {
     console.log(getCatDto);
     return getCatDto;

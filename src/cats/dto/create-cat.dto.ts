@@ -14,3 +14,9 @@ export class GetCatDto {
   @IsString()
   sex: string;
 }
+export class PermissionDto {
+  @IsString()
+  name: string;
+  @IsString()
+  desc: string;
+}

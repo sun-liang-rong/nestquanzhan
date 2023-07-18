@@ -27,7 +27,7 @@ console.log(MYSQL_CONFIG.password)
     synchronize: true,
   }),
   AuthModule,
-  RedisCacheModule
+  RedisCacheModule,
 ],
   controllers: [AppController],
   providers: [AppService],

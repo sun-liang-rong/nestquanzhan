@@ -1,7 +1,7 @@
-import { Entity,PrimaryGeneratedColumn, Column, BeforeInsert, OneToOne, JoinColumn } from 'typeorm'
+import { Entity,PrimaryGeneratedColumn, ManyToMany, JoinTable, Column, BeforeInsert, OneToOne, JoinColumn } from 'typeorm'
 import { hashPassword } from '../../utils/bcryptjs'
 import { CatInfo } from '../../entities/info.entity';
-
+import { Role } from '../../entities/role.entity';
 @Entity()
 export class Cat {
   @PrimaryGeneratedColumn('uuid')
@@ -34,6 +34,11 @@ export class Cat {
   @JoinColumn()
   info: CatInfo;
 
+  @ManyToMany(() => Role)
+  @JoinTable({
+    name: 'cat_role',
+  })
+  roles: Role[];
   @BeforeInsert()
   encryptPwd() {
     this.password = hashPassword(this.password)
