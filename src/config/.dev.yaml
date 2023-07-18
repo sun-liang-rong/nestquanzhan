@@ -8,3 +8,12 @@ MYSQL_CONFIG:
   database: "test"
   entities: "mysql" 
   synchronize: true
+
+#redis配置
+#192.168.137.1
+REDIS_CONFIG:
+  REDIS_HOST: 127.0.0.1
+  REDIS_PORT: 6379
+  REDIS_DB:  0
+  REDIS_PASSPORT: 123456
+

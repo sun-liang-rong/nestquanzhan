@@ -5,6 +5,7 @@ import { UpdateAuthDto } from './dto/update-auth.dto';
 import { AuthGuard } from '@nestjs/passport'
 import { Roles } from './role.guard'
 import { RoleGuard } from './role.guard'
+
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
@@ -13,7 +14,7 @@ export class AuthController {
   create(@Body() loginAuthDto: LoginAuthDto, @Req() req) {
     return this.authService.login(req.user);
   }
-  @Roles('admin')
+  @Roles('admin', 'visitor')
   @UseGuards(AuthGuard('jwt'), RoleGuard)
   @Get('hhh')
   findAll(@Body() s,@Req() req) {

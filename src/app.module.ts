@@ -5,11 +5,9 @@ import { CatsModule } from './cats/cats.module';
 import { ConfigModule } from '@nestjs/config';
 import { getConfig } from './utils';
 import { LoggerMiddleware } from './LoggerMiddleware'
-import * as winston from 'winston';
-import { format } from 'winston';
-import { WinstonModule } from 'nest-winston';
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { AuthModule } from './auth/auth.module';
+import { RedisCacheModule } from './db/redis-cache.module'
 const { MYSQL_CONFIG } = getConfig();
 console.log(MYSQL_CONFIG.password)
 @Module({
@@ -29,6 +27,7 @@ console.log(MYSQL_CONFIG.password)
     synchronize: true,
   }),
   AuthModule,
+  RedisCacheModule
 ],
   controllers: [AppController],
   providers: [AppService],
