@@ -14,7 +14,7 @@ export class AuthController {
   create(@Body() loginAuthDto: LoginAuthDto, @Req() req) {
     return this.authService.login(req.user);
   }
-  @Roles('admin', 'visitor')
+  @Roles('update', 'delete')
   @UseGuards(AuthGuard('jwt'), RoleGuard)
   @Get('hhh')
   findAll(@Body() s,@Req() req) {

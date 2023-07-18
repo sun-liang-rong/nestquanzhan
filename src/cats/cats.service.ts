@@ -3,9 +3,10 @@ import { RegisterCatDto, GetCatDto, PermissionDto } from './dto/create-cat.dto';
 import { UpdateCatDto } from './dto/update-cat.dto';
 import { Cat } from './entities/cat.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, In } from 'typeorm';
 import { CatInfo } from 'src/entities/info.entity';
 import { Permission } from 'src/entities/permission.entity';
+import { Role } from 'src/entities/role.entity'
 @Injectable()
 export class CatsService {
   constructor(
@@ -13,6 +14,7 @@ export class CatsService {
     @InjectRepository(CatInfo)
     private readonly catInfoRepository: Repository<CatInfo>,
     @InjectRepository(Permission) private readonly permissionRepository: Repository<Permission>,
+    @InjectRepository(Role) private readonly roleRepository: Repository<Role>,
     ) {}
   async create(registerCatDto: RegisterCatDto) {
     const existUser = await this.catRepository.findOne({
@@ -23,7 +25,12 @@ export class CatsService {
     if (existUser) {
       throw new HttpException('用户名已存在', 400);
     } else {
-      const user = await this.catRepository.create(registerCatDto);
+      const exitsRoles = await this.roleRepository.find({
+        where: {
+          id: In(registerCatDto.roleIds)
+        }
+      })
+      const user = await this.catRepository.create({name: registerCatDto.name, password: registerCatDto.password, roles: exitsRoles});
       const newUser = await this.catRepository.save(user);
       return await this.catRepository.findOne({
         where: {
@@ -45,6 +52,31 @@ export class CatsService {
     const permission = await this.permissionRepository.create(permissionDto)
     const newPermission = await this.permissionRepository.save(permission)
     return newPermission
+  }
+  async createRole(role){
+    console.log(role.permissionIds)
+    const permission = await this.permissionRepository.find({
+      where: {
+        id: In(role.permissionIds)
+      }
+    })
+    console.log(permission)
+    // return permission
+    const existRole = await this.roleRepository.findOne({
+      where: {
+        name: role.name
+      }
+    })
+    console.log(existRole)
+    if(existRole){
+      throw new HttpException('角色已存在', 400);
+    }
+    const newRole = await this.roleRepository.create({
+      name: role.name,
+      permission: permission
+    })
+    const result = await this.roleRepository.save(newRole)
+    return result;
   }
   findAll(getCatDto: GetCatDto) {
     console.log(getCatDto);

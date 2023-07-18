@@ -13,9 +13,6 @@ export class Cat {
   @Column({length: 100, select: false})
   password: string;
 
-  @Column({default: 'visitor'})
-  role: string;
-
   @Column({
     name: 'create_time',
     type: 'timestamp',
@@ -39,6 +36,7 @@ export class Cat {
     name: 'cat_role',
   })
   roles: Role[];
+  
   @BeforeInsert()
   encryptPwd() {
     this.password = hashPassword(this.password)

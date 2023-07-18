@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Query, Req, UseGuards } from '@nestjs/common';
 import { CatsService } from './cats.service';
-import { RegisterCatDto, GetCatDto, PermissionDto } from './dto/create-cat.dto';
+import { RegisterCatDto, GetCatDto, PermissionDto, CreateRoleDto } from './dto/create-cat.dto';
 import { UpdateCatDto } from './dto/update-cat.dto';
 import { AuthGuard } from '@nestjs/passport'
 @Controller('cats')
@@ -14,6 +14,10 @@ export class CatsController {
   @Post('createPermission')
   createPermission(@Body() permission: PermissionDto) {
     return this.catsService.createPermission(permission);
+  }
+  @Post('createRole')
+  CreateRoleDto(@Body() role: CreateRoleDto) {
+    return this.catsService.createRole(role);
   }
   @Get()
   findAll(@Query() getCatDto: GetCatDto) {

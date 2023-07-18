@@ -4,6 +4,7 @@ export class RegisterCatDto {
   name: string;
   @IsString()
   password: string;
+  roleIds: []
 }
 
 export class GetCatDto {
@@ -19,4 +20,11 @@ export class PermissionDto {
   name: string;
   @IsString()
   desc: string;
+}
+
+export class CreateRoleDto {
+  @IsString()
+  name: string;
+  
+  permissionIds: [];
 }

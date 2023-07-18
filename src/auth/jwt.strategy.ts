@@ -22,7 +22,7 @@ export class JwtStorage extends PassportStrategy(Strategy) {
     console.log(user, '-------------->');
     let token = ExtractJwt.fromAuthHeaderAsBearerToken()(req);
     //在验证token时， 从redis中取token，如果取不到token，可能是token已过期。
-    const cacheToken = await this.redisCacheService.cacheGet(`${user.id}&${user.name}&${user.role}`)
+    const cacheToken = await this.redisCacheService.cacheGet(`${user.id}&${user.name}`)
     console.log(cacheToken)
     if(!cacheToken){
       throw new UnauthorizedException('token不正确')
@@ -40,7 +40,7 @@ export class JwtStorage extends PassportStrategy(Strategy) {
     if(!exitsUser){
       throw new UnauthorizedException('token不正确')
     }
-    this.redisCacheService.cacheSet(`${user.id}&${user.name}&${user.role}`, token, 1800)
+    this.redisCacheService.cacheSet(`${user.id}&${user.name}`, token, 1800)
     return exitsUser;
   }
 }

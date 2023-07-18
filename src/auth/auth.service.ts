@@ -24,7 +24,7 @@ export class AuthService {
       user.token = token
     }
     //在登录时，将jwt生成的token，存入redis,并设置有效期为30分钟。存入redis的key由用户信息组成， value是token值。
-    await this.redisCacheService.cacheSet( `${user.id}&${user.name}&${user.role}`, token, 1800)
+    await this.redisCacheService.cacheSet( `${user.id}&${user.name}`, token, 1800)
     return user
   }
   findAll(req) {
