@@ -20,3 +20,10 @@ export class PermissionDto {
   @IsString()
   desc: string;
 }
+
+export class CreateRoleDto {
+  @IsString()
+  name: string;
+  @IsString()
+  desc: string;
+}
