@@ -8,22 +8,22 @@ import { LoggerMiddleware } from './LoggerMiddleware'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { AuthModule } from './auth/auth.module';
 import { RedisCacheModule } from './db/redis-cache.module'
-import { ClientsModule, Transport } from '@nestjs/microservices'
+// import { ClientsModule, Transport } from '@nestjs/microservices'
 const { MYSQL_CONFIG } = getConfig();
 console.log(MYSQL_CONFIG.password)
 //微服务需要在主服务的appmodule里面注册
 @Module({
   imports: [CatsModule,
   //调用 ClientModule.register 指定名字、传输方式为 TCP、端口为 3001
-  ClientsModule.register([
-    {
-      name: 'MATH_SERVICE',
-      transport: Transport.TCP,
-      options: {
-        port: 3001,
-      }
-    }
-  ]),
+  // ClientsModule.register([
+  //   {
+  //     name: 'MATH_SERVICE',
+  //     transport: Transport.TCP,
+  //     options: {
+  //       port: 3001,
+  //     }
+  //   }
+  // ]),
   ConfigModule.forRoot({
     ignoreEnvFile: true,
     isGlobal: true,
